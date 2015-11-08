@@ -37,9 +37,31 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
     }
     
+    //search method
+    
     func searchPressed() {
         
+        let index = pickerView.selectedRowInComponent(0)
         
+        let stateString = states[index]
+        
+        RepresentativeController.searchRepsByState(stateString) { (representatives) -> Void in
+            
+            if representatives.count > 0 {
+                
+                self.resultsReps = representatives
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    let resultsTableVC = ResultsTableViewController()
+                    
+                    resultsTableVC.repsArray = self.resultsReps
+                    
+                    self.navigationController?.pushViewController(resultsTableVC, animated: true)
+                })
+                
+            }
+        }
         
     }
     
